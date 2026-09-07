@@ -30,5 +30,4 @@ public class Conta {
     @OneToMany(mappedBy = "id_conta")
     private List<Extrato> extrato;
 
-
 }
