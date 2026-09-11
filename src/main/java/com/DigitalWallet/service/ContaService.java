@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class ContaService {
@@ -51,6 +52,11 @@ public class ContaService {
         Transacao deposito1 = transacaoRepository.save(deposito);
 
         conta.setSaldo(conta.getSaldo().add(deposito1.getValor()));
+        List<Transacao> transacoes = conta.getTransacoes();
+
+        transacoes.add(deposito1);
+
+        conta.setTransacoes(transacoes);
         contaRepository.save(conta);
 
         return TransacaoMapper.toResponseDTO(deposito1);

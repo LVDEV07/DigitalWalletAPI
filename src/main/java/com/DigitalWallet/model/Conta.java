@@ -27,7 +27,6 @@ public class Conta {
     @Column(nullable = false)
     private BigDecimal saldo;
 
-    @OneToMany(mappedBy = "id_conta")
-    private List<Extrato> extrato;
-
+    @OneToMany
+    private List<Transacao> transacoes;
 }

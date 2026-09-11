@@ -7,7 +7,7 @@ import com.DigitalWallet.model.Conta;
 
 public class ContaMapper {
     public static ContaResponseDTO toResponseDTO(Conta conta){
-        return new ContaResponseDTO(conta.getNome(), conta.getCpf(), conta.getSaldo(), conta.getExtrato());
+        return new ContaResponseDTO(conta.getNome(), conta.getCpf(), conta.getSaldo(), conta.getTransacoes());
     }
 
     public static Conta toRequestDTO(ContaRequestDTO conta){
