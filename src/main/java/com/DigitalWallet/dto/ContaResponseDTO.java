@@ -8,7 +8,6 @@ import java.util.List;
 public record ContaResponseDTO (
         String nome,
         String cpf,
-        BigDecimal saldo,
-        List<Transacao> transacoes
+        BigDecimal saldo
 ) {
 }

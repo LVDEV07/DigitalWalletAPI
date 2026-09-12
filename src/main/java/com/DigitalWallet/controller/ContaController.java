@@ -12,9 +12,11 @@ import com.DigitalWallet.model.Conta;
 import com.DigitalWallet.model.Transacao;
 import com.DigitalWallet.service.ContaService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
@@ -32,7 +34,7 @@ public class ContaController {
     }
 
     @GetMapping("{id}")
-    public ContaResponseDTO buscarPorId (@PathVariable Long id){
+    public ResponseEntity<ContaResponseDTO> buscarPorId (@PathVariable Long id){
        return contaService.buscarPorId(id);
 
     }
@@ -40,6 +42,12 @@ public class ContaController {
     @PostMapping("{id}/deposit")
     public TransacaoResponseDTO deposito (@PathVariable Long id, @RequestBody TransacaoRequestDTO transacao){
        return contaService.deposito(id, transacao);
+    }
+
+    @GetMapping("{id}/statement")
+    public List<TransacaoResponseDTO> extrato (@PathVariable Long id){
+        return contaService.extrato(id);
+
     }
 
 }

@@ -13,6 +13,7 @@ import com.DigitalWallet.model.Transacao;
 import com.DigitalWallet.repository.ContaRepository;
 import com.DigitalWallet.repository.TransacaoRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,10 +36,9 @@ public class ContaService {
         return ContaMapper.toResponseDTO(conta1);
     }
 
-    public ContaResponseDTO buscarPorId (Long id){
-        Conta conta =
-                contaRepository.findById(id).orElseThrow(() -> new ContaNaoEncontradaException(HttpStatus.NOT_FOUND,id));
-        return ContaMapper.toResponseDTO(conta);
+    public ResponseEntity<ContaResponseDTO> buscarPorId (Long id){
+        Conta conta = contaRepository.findById(id).orElseThrow(() -> new ContaNaoEncontradaException(HttpStatus.NOT_FOUND,id));
+        return ResponseEntity.status(HttpStatus.OK).body(ContaMapper.toResponseDTO(conta));
     }
 
     public TransacaoResponseDTO deposito (Long id, TransacaoRequestDTO transacao){
@@ -60,5 +60,12 @@ public class ContaService {
         contaRepository.save(conta);
 
         return TransacaoMapper.toResponseDTO(deposito1);
+    }
+
+    public List<TransacaoResponseDTO> extrato (Long id){
+        Conta conta = contaRepository.findById(id).orElseThrow(()-> new ContaNaoEncontradaException(HttpStatus.NOT_FOUND, id));
+
+        return conta.getTransacoes().stream().map(TransacaoMapper::toResponseDTO).toList();
+
     }
 }
