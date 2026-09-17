@@ -29,8 +29,8 @@ public class ContaController {
     }
 
     @PostMapping
-    public ContaResponseDTO criar (@RequestBody ContaRequestDTO contaRequestDTO){
-        return contaService.criar(contaRequestDTO);
+    public ResponseEntity<ContaResponseDTO> criar (@RequestBody ContaRequestDTO contaRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(contaService.criar(contaRequestDTO));
     }
 
     @GetMapping("{id}")

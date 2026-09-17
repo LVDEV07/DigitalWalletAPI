@@ -5,6 +5,7 @@ import com.DigitalWallet.dto.ContaResponseDTO;
 import com.DigitalWallet.dto.TransacaoRequestDTO;
 import com.DigitalWallet.dto.TransacaoResponseDTO;
 import com.DigitalWallet.exception.ContaNaoEncontradaException;
+import com.DigitalWallet.exception.CpfJaCadastrado;
 import com.DigitalWallet.exception.ValorInvalidoException;
 import com.DigitalWallet.mapper.ContaMapper;
 import com.DigitalWallet.mapper.TransacaoMapper;
@@ -30,6 +31,11 @@ public class ContaService {
     }
 
     public ContaResponseDTO criar (ContaRequestDTO conta){
+
+        if (contaRepository.findAll().stream().anyMatch(c-> c.getCpf().equals(conta.cpf()))){
+            throw new CpfJaCadastrado("Conta ja cadastrada");
+        }
+
         Conta newUser = ContaMapper.toRequestDTO(conta);
         Conta conta1 = contaRepository.save(newUser);
 
