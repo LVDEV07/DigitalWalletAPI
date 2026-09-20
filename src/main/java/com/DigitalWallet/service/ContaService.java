@@ -6,6 +6,7 @@ import com.DigitalWallet.dto.TransacaoRequestDTO;
 import com.DigitalWallet.dto.TransacaoResponseDTO;
 import com.DigitalWallet.exception.ContaNaoEncontradaException;
 import com.DigitalWallet.exception.CpfJaCadastrado;
+import com.DigitalWallet.exception.SaldoInsuficienteException;
 import com.DigitalWallet.exception.ValorInvalidoException;
 import com.DigitalWallet.mapper.ContaMapper;
 import com.DigitalWallet.mapper.TransacaoMapper;
@@ -73,5 +74,26 @@ public class ContaService {
 
         return conta.getTransacoes().stream().map(TransacaoMapper::toResponseDTO).toList();
 
+    }
+
+    public TransacaoResponseDTO transferencia (Long id_origem, TransacaoRequestDTO transacaoRequestDTO ){
+
+        Conta conta_origem = contaRepository.findById(id_origem).orElseThrow(()-> new ContaNaoEncontradaException(HttpStatus.NOT_FOUND, id_origem));
+        Conta conta_destino = contaRepository.findById(transacaoRequestDTO.id_destino()).orElseThrow(()-> new ContaNaoEncontradaException(HttpStatus.NOT_FOUND, transacaoRequestDTO.id_destino()));
+
+
+        if (!(conta_origem.getSaldo().compareTo(transacaoRequestDTO.valor()) > 0)){
+            throw new SaldoInsuficienteException();
+        }
+
+            conta_origem.setSaldo(conta_origem.getSaldo().subtract(transacaoRequestDTO.valor()));
+            conta_destino.setSaldo(conta_destino.getSaldo().add(transacaoRequestDTO.valor()));
+
+                contaRepository.save(conta_origem);
+            contaRepository.save(conta_destino);
+
+            Transacao transacao = transacaoRepository.save(TransacaoMapper.toRequestDTO(transacaoRequestDTO));
+
+            return TransacaoMapper.toResponseDTO(transacao);
     }
 }

@@ -17,7 +17,21 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal valor;
-    private LocalDateTime horaTransacao;
+    private LocalDateTime horaTransacao = LocalDateTime.now();
+    private Long id_destino;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

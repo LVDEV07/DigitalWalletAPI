@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public record TransacaoRequestDTO (
     BigDecimal valor,
-    LocalDateTime data
+    Long id_destino
 
 )
 {

@@ -63,4 +63,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
+    @ExceptionHandler(SaldoInsuficienteException.class)
+    public ResponseEntity<Map<String, Object>> saldoInsuficiente (SaldoInsuficienteException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("status", 422);
+        body.put("erros", List.of(Map.of(
+                "mensagem", "Saldo insuficiente"
+        )));
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(body);
+    }
+
 }
